@@ -8,5 +8,11 @@
 `#make`
 
 ###Usage
-`$todo -[adlh]`
+    $todo -[adlh]
+    -a    add a TODO
+    -d    delete TODO have added
+    -l    list TODO
+    -h    help
+
+
 
