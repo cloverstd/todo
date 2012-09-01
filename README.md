@@ -1,12 +1,12 @@
 ##A simple todo app for Linux
 
 ###install
-`git clone git://github.com/cloverstd/todo.git`
+`$git clone git://github.com/cloverstd/todo.git`
 
-`cd todo`
+`$cd todo`
 
-`make`
+`#make`
 
 ###Usage
-todo -[adlh]
+`$todo -[adlh]`
 
