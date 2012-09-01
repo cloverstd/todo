@@ -2,7 +2,9 @@
 
 ###install
 `git clone git://github.com/cloverstd/todo.git`
+
 `cd todo`
+
 `make`
 
 ###Usage
