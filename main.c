@@ -1,36 +1,11 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-
-#define MAXTODO 100
-#define MAXNAME 100
-
-typedef struct TODO_ITEM {
-    char item[MAXTODO];
-} todo_item;
-
-todo_item todo;
-
-/* add a item into TODO_ITEM struct */
-void add_item(todo_item todo, char *);
-
-/* delete a item from todo list */
-void delete_item(char *);
-
-/* list all todo item */
-void list_item(char *);
-
-/* help */
-void help(char *filename);
-
-/* open file to save todo list */
+#include"main.h"
 
 
 int main(int argc, char **argv)
 {
     char *path = getenv("HOME");
-    char *todofile = "/todo.list";
-    strcat(path, todofile);
+    strcat(path, "/todo.list");
+    strcpy(todofile, path);
     char filename[MAXNAME];
     strcpy(filename, *argv);
     if (argc == 1)
@@ -75,12 +50,7 @@ void help(char *filename)
 
 void add_item(todo_item todo, char *todofile)
 {
-    FILE *fp = fopen(todofile, "w");
-    if (fp == NULL)
-    {
-        printf("Open file error!\n");
-        exit(2);
-    }
+    FILE *fp = open_list("w");
 
     printf("Please type your TODO:\n");
     gets(todo.item);
@@ -92,24 +62,16 @@ void add_item(todo_item todo, char *todofile)
 
 void delete_item(char *todofile)
 {
-    FILE *fp = fopen(todofile, "w");
-    if (fp == NULL)
-    {
-        printf("Open file error!\n");
-        exit(2);
-    }
+    FILE *fp = open_list("w");
+    printf("todo list has deleted.\n");
     fclose(fp);
 }
 
 void list_item(char *todofile)
 {
 
-    FILE *fp = fopen(todofile, "r");
-    if (fp == NULL)
-    {
-        printf("Open file error!\n");
-        exit(2);
-    }
+    FILE *fp = open_list("r");
+
     fgets(todo.item, MAXTODO, fp);
     
     if (strlen(todo.item) == 0)
@@ -123,4 +85,16 @@ void list_item(char *todofile)
         putchar('\n');
     }
     fclose(fp);
+}
+
+FILE *open_list(char *mode)
+{
+    FILE *fp;
+    fp = fopen(todofile, mode);
+    if (fp == NULL)
+    {
+        fprintf(stderr, "Open file error!\n");
+        return NULL;
+    }
+    return fp;
 }
