@@ -1,8 +1,14 @@
-#include"main.h"
+#include "main.h"
 
 
 int main(int argc, char **argv)
 {
+    struct option longopts[] = {
+        {"add", 1, NULL, 'a'},
+        {"dellete", 0, NULL, 'd'},
+        {"list", 0, NULL, 'l'},
+        {"help", 0, NULL, 'h'},
+        {0, 0, 0, 0}};
     int opt;
     char *path = getenv("HOME");
     strcat(path, "/todo.list");
@@ -15,7 +21,7 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    while((opt = getopt(argc, argv, ":a:dl")) != -1)
+    while((opt = getopt_long(argc, argv, ":a:dlh", longopts, NULL)) != -1)
     {
         switch(opt)
         {
@@ -34,6 +40,9 @@ int main(int argc, char **argv)
             case 'l':
                 list_item(path);
                 break;
+            case 'h':
+                help(filename);
+                break;
             case ':':
                 help(filename);
                 break;
@@ -47,7 +56,11 @@ int main(int argc, char **argv)
 
 void help(char *filename)
 {
-    printf("Usage: %s -[[a todo list]dl]\n", filename);
+    printf("Usage: %s [option] [todo list]...\n", filename);
+    printf("  -a, --add                 add a todo list\n");
+    printf("  -d, --delete              delete todo list\n");
+    printf("  -l, --list                list todo list\n");
+    printf("  -h, --help                display this help and exit\n");
 }
 
 void add_item(todo_item todo, char *todofile)

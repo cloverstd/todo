@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
+#define _GNU_SOURCE
+#include<getopt.h>
 
 #define MAXTODO 100
 #define MAXNAME 100
