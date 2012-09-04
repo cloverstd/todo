@@ -3,6 +3,7 @@
 
 int main(int argc, char **argv)
 {
+    int opt;
     char *path = getenv("HOME");
     strcat(path, "/todo.list");
     strcpy(todofile, path);
@@ -13,31 +14,32 @@ int main(int argc, char **argv)
         help(filename);
         exit(1);
     }
-    while (--argc > 0)
+
+    while((opt = getopt(argc, argv, ":a:dl")) != -1)
     {
-        ++argv;
-        if ((*argv)[0] == '-')
+        switch(opt)
         {
-            switch((*argv)[1])
-            {
-                case 'a': 
-                    add_item(todo, path);
-                    break;
-                case 'd':
-                    delete_item(path);
-                    break;
-                case 'l':
-                    list_item(path);
-                    break;
-                default:
-                    help(filename);
-                    exit(1);
+            case 'a':
+                optind--;
+                while (argv[optind])
+                {
+                    strcat(todo.item, argv[optind++]);
+                    strcat(todo.item, " ");
                 }
-        }
-        else 
-        {
-            help(filename);
-            exit(1);
+                add_item(todo, path);
+                break;
+            case 'd':
+                delete_item(path);
+                break;
+            case 'l':
+                list_item(path);
+                break;
+            case ':':
+                help(filename);
+                break;
+            case '?':
+                help(filename);
+                break;
         }
     }
     return 0;
@@ -45,15 +47,13 @@ int main(int argc, char **argv)
 
 void help(char *filename)
 {
-    printf("Usage: %s -[adl]\n", filename);
+    printf("Usage: %s -[[a todo list]dl]\n", filename);
 }
 
 void add_item(todo_item todo, char *todofile)
 {
     FILE *fp = open_list("w");
 
-    printf("Please type your TODO:\n");
-    gets(todo.item);
     fprintf(fp, "%s", todo.item);
     printf("TODO has saved.\n");
 
